@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://bmeg1nv54s8e3"]
+
+[ext_resource type="AudioStream" uid="uid://cpfyfygjtq3vl" path="res://assets/sounds/sfx_exp_medium4.wav" id="1_406b4"]
+[ext_resource type="Script" path="res://Scenes/Boom/Boom.cs" id="1_fbqqe"]
+[ext_resource type="Texture2D" uid="uid://mpqrfntjs0yu" path="res://assets/spritesheets/EXPLOSION_ANIMATION.png" id="1_lvkne"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pgenw"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_228bw"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p6fyh"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlafb"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbgpv"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pck5u"]
+atlas = ExtResource("1_lvkne")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3ni2l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pgenw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_228bw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p6fyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nlafb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbgpv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pck5u")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Boom" type="AnimatedSprite2D" node_paths=PackedStringArray("_sound")]
+process_mode = 3
+sprite_frames = SubResource("SpriteFrames_3ni2l")
+autoplay = "default"
+script = ExtResource("1_fbqqe")
+_sound = NodePath("Sound")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_406b4")
+autoplay = true
