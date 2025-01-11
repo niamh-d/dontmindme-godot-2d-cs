@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=4 uid="uid://cxsaxh56lbmwx"]
+[gd_scene load_steps=6 format=4 uid="uid://cxsaxh56lbmwx"]
 
 [ext_resource type="Script" path="res://Scenes/Level/Level.cs" id="1_hs7gv"]
 [ext_resource type="TileSet" uid="uid://cv16fllilji0u" path="res://assets/LevelTiles.tres" id="2_24ups"]
+[ext_resource type="PackedScene" uid="uid://dx31f3ncf03ah" path="res://Scenes/NPC/Npc.tscn" id="3_magdj"]
+[ext_resource type="PackedScene" uid="uid://5lp2c3ugrocp" path="res://Scenes/GameUI/GameUi.tscn" id="4_1sdxf"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_qnk4o"]
+vertices = PackedVector2Array(145.82, 83.8281, 305.047, 81.1562, 306.047, 265.891, 137.18, 563.969, 1016.96, 562.023, 773.633, 271.109, 1015.04, 79.1094, 780.633, 81.8828)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5), PackedInt32Array(6, 4, 5, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(136, 74, 315, 71, 316, 256, 764, 261, 771, 72, 1025, 69, 1027, 572, 127, 574)])
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_hs7gv")
@@ -15,3 +22,13 @@ tile_set = ExtResource("2_24ups")
 [node name="Walls" type="TileMapLayer" parent="Tiles"]
 tile_map_data = PackedByteArray("AAALAAEAAwABAAIAAAALAAAAAwAAAAAAAAAMAAAAAwACAAAAAAANAAAAAwACAAAAAAAOAAAAAwACAAAAAAAPAAAAAwACAAAAAAAQAAAAAwABAAAAAAAQAAkAAwAAAAIAAAAPAAkAAwACAAAAAAAOAAkAAwACAAAAAAANAAkAAwACAAAAAAAMAAkAAwACAAAAAAALAAkAAwACAAAAAAAKAAkAAwACAAAAAAAJAAkAAwACAAAAAAAIAAkAAwACAAAAAAAHAAkAAwACAAAAAAAGAAkAAwACAAAAAAAFAAkAAwACAAAAAAAEAAkAAwACAAAAAAADAAkAAwACAAAAAAACAAkAAwACAAAAAAABAAkAAwADAAEAAAABAAAAAwAAAAAAAAACAAAAAwACAAAAAAADAAAAAwACAAAAAAALAAIAAwABAAIAAAAQAAEAAwABAAIAAAAQAAIAAwABAAIAAAAQAAMAAwABAAIAAAAQAAQAAwABAAIAAAAQAAUAAwABAAIAAAAQAAYAAwABAAIAAAAQAAcAAwABAAIAAAAQAAgAAwABAAIAAAABAAEAAwABAAIAAAABAAIAAwABAAIAAAABAAMAAwABAAIAAAABAAQAAwABAAIAAAABAAUAAwABAAIAAAABAAYAAwABAAIAAAABAAcAAwABAAIAAAABAAgAAwABAAIAAAAFAAMAAwADAAEAAAAGAAMAAwACAAAAAAAHAAMAAwACAAAAAAAIAAMAAwACAAAAAAAJAAMAAwACAAAAAAAKAAMAAwACAAAAAAALAAMAAwAAAAIAAAAFAAAAAwABAAAAAAAFAAEAAwABAAIAAAAFAAIAAwABAAIAAAAEAAAAAwACAAAAAAA=")
 tile_set = ExtResource("2_24ups")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_qnk4o")
+
+[node name="NPC" parent="." instance=ExtResource("3_magdj")]
+position = Vector2(195, 338)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameUI" parent="CanvasLayer" instance=ExtResource("4_1sdxf")]

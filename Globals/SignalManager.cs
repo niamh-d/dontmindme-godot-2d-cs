@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class SignalManager : Node
 {
@@ -7,6 +6,7 @@ public partial class SignalManager : Node
     [Signal] public delegate void OnShowExitEventHandler();
     [Signal] public delegate void OnExitFoundEventHandler();
     [Signal] public delegate void OnGameOverEventHandler();
+    [Signal] public delegate void OnDebugLabelEventHandler(string str);
 
     public static SignalManager Instance;
 
@@ -33,5 +33,10 @@ public partial class SignalManager : Node
     public static void EmitOnGameOver()
     {
         Instance.EmitSignal(SignalName.OnGameOver);
+    }
+
+    public static void EmitOnDebugLabel(string str)
+    {
+        Instance.EmitSignal(SignalName.OnDebugLabel, str);
     }
 }
