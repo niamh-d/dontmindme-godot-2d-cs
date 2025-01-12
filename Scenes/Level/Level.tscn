@@ -35,7 +35,7 @@ tile_map_data = PackedByteArray("AAAMAAAAAwACAAAAAAANAAAAAwACAAAAAAAOAAAAAwACAAA
 tile_set = ExtResource("2_24ups")
 
 [node name="NPC" parent="." node_paths=PackedStringArray("_patrolPoints") instance=ExtResource("3_magdj")]
-position = Vector2(195, 338)
+position = Vector2(176, 475)
 _patrolPoints = NodePath("../PatrolPaths/Path1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -67,9 +67,10 @@ polygon = PackedVector2Array(323, 265, 574, 265, 574, 451, 323, 445)
 
 [node name="Player" parent="." instance=ExtResource("6_bhgcs")]
 position = Vector2(525, 183)
+_moveSpeed = 130.0
 
 [node name="Exit" parent="." instance=ExtResource("8_tuehx")]
-position = Vector2(773, 391)
+position = Vector2(998, 86)
 
 [node name="Pickups" type="Node" parent="."]
 

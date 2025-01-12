@@ -54,21 +54,6 @@ public partial class Npc : CharacterBody2D
 		UpdateState();
 		UpdateMovement();
 		UpdateNavigation();
-		UpdateDebugLabel();
-	}
-
-	private void UpdateDebugLabel()
-	{
-		string str = "";
-		str += $"IsTargetReached: {_navAgent.IsTargetReached()}\n";
-		str += $"IsTargetReachable: {_navAgent.IsTargetReachable()}\n";
-		str += $"IsNavigationFinished: {_navAgent.IsNavigationFinished()}\n";
-		str += $"Target: {_navAgent.TargetPosition}\n";
-		str += $"Target: {GetFovAngle():F2}; InFOV: {PlayerIsInFov()}\n";
-		str += $"PlayerDetected: {PlayerDetected()}\n";
-		str += $"CanSeePlayer: {CanSeePlayer()}\n";
-		str += $"State: {_state}\n";
-		SignalManager.EmitOnDebugLabel(str);
 	}
 
 	private float GetFovAngle()
