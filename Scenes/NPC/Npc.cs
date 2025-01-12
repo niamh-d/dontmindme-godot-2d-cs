@@ -5,7 +5,7 @@ using Godot;
 public partial class Npc : CharacterBody2D
 {
 	[Export] private NavigationAgent2D _navAgent;
-	[Export] private float _moveSpeed = 100.0f;
+	[Export] private float _moveSpeed = 80.0f;
 	[Export] private Node2D _patrolPoints;
 	[Export] private Node2D _playerDetect;
 	[Export] private RayCast2D _rayCast;
@@ -45,6 +45,7 @@ public partial class Npc : CharacterBody2D
 			_navAgent.TargetPosition = GetGlobalMousePosition();
 		}
 		RayCastToPlayer();
+		UpdateState();
 		UpdateMovement();
 		UpdateNavigation();
 		UpdateDebugLabel();
@@ -58,6 +59,9 @@ public partial class Npc : CharacterBody2D
 		str += $"IsNavigationFinished: {_navAgent.IsNavigationFinished()}\n";
 		str += $"Target: {_navAgent.TargetPosition}\n";
 		str += $"Target: {GetFovAngle():F2}; InFOV: {PlayerIsInFov()}\n";
+		str += $"PlayerDetected: {PlayerDetected()}\n";
+		str += $"CanSeePlayer: {CanSeePlayer()}\n";
+		str += $"State: {_state}\n";
 		SignalManager.EmitOnDebugLabel(str);
 	}
 
@@ -81,6 +85,17 @@ public partial class Npc : CharacterBody2D
 	private void RayCastToPlayer()
 	{
 		_playerDetect.LookAt(_playerRef.GlobalPosition);
+	}
+
+	private bool PlayerDetected()
+	{
+		var collider = _rayCast.GetCollider();
+		return collider != null && (collider is Player);
+	}
+
+	private bool CanSeePlayer()
+	{
+		return PlayerDetected() && PlayerIsInFov();
 	}
 
 	private void UpdateNavigation()
@@ -120,22 +135,50 @@ public partial class Npc : CharacterBody2D
 		}
 	}
 
+	private void SetState(EnemyState newState)
+	{
+		if (_state == newState) return;
+		if (newState == EnemyState.Patrolling)
+		{
+			SetNextWaypoint();
+		}
+		_state = newState;
+	}
+
+	private void UpdateState()
+	{
+		var newState = _state;
+		var canSee = CanSeePlayer();
+
+		if (canSee)
+		{
+			newState = EnemyState.Chasing;
+		}
+		else if (!canSee && _state == EnemyState.Chasing)
+		{
+			newState = EnemyState.Searching;
+		}
+		SetState(newState);
+	}
+
 	private void ProcessPatrolling()
 	{
 		if (_navAgent.IsNavigationFinished())
 		{
 			SetNextWaypoint();
-			_state = EnemyState.Patrolling;
 		}
 	}
 
 	private void ProcessChasing()
 	{
-		throw new NotImplementedException();
+		_navAgent.TargetPosition = _playerRef.GlobalPosition;
 	}
 
 	private void ProcessSearching()
 	{
-		throw new NotImplementedException();
+		if (_navAgent.IsNavigationFinished())
+		{
+			SetState(EnemyState.Patrolling);
+		}
 	}
 }
