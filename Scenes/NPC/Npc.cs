@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -9,6 +8,9 @@ public partial class Npc : CharacterBody2D
 	[Export] private Node2D _patrolPoints;
 	[Export] private Node2D _playerDetect;
 	[Export] private RayCast2D _rayCast;
+	[Export] private Sprite2D _warning;
+	[Export] private AudioStreamPlayer2D _sound;
+	[Export] private AnimationPlayer _animationPlayer;
 
 	private enum EnemyState { Patrolling, Chasing, Searching }
 	private EnemyState _state = EnemyState.Patrolling;
@@ -138,9 +140,24 @@ public partial class Npc : CharacterBody2D
 	private void SetState(EnemyState newState)
 	{
 		if (_state == newState) return;
+
 		if (newState == EnemyState.Patrolling)
 		{
+			_warning.Hide();
 			SetNextWaypoint();
+		}
+
+		else if (newState == EnemyState.Searching)
+		{
+			_warning.Show();
+			_animationPlayer.Play("RESET");
+		}
+
+		else if (newState == EnemyState.Chasing)
+		{
+			_warning.Hide();
+			SoundManager.PlayGasp(_sound);
+			_animationPlayer.Play("flash");
 		}
 		_state = newState;
 	}
