@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://5lp2c3ugrocp"]
+[gd_scene load_steps=5 format=3 uid="uid://5lp2c3ugrocp"]
 
 [ext_resource type="Script" path="res://Scenes/GameUI/GameUi.cs" id="1_o0gt8"]
+[ext_resource type="LabelSettings" uid="uid://dvc0ngl7cacyp" path="res://assets/lg_d_blue_32.tres" id="2_0p1gy"]
+[ext_resource type="LabelSettings" uid="uid://djdsdv0ajoefh" path="res://assets/lg_l_green_48.tres" id="3_0byik"]
+[ext_resource type="LabelSettings" uid="uid://dicwna6n54ysw" path="res://assets/lg_d_orange_64.tres" id="4_oxskc"]
 
-[node name="GameUI" type="Control" node_paths=PackedStringArray("_debugLabel")]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("_debugLabel", "_exitLabel", "_scoreLabel", "_timeLabel", "_gameOverLabel", "_gameOverRect")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,8 +14,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o0gt8")
 _debugLabel = NodePath("ColorRect/DebugLabel")
+_exitLabel = NodePath("MarginContainer/ExitLabel")
+_scoreLabel = NodePath("MarginContainer/ScoreLabel")
+_timeLabel = NodePath("MarginContainer/TimeLabel")
+_gameOverLabel = NodePath("GameOverCover/GameOverLabel")
+_gameOverRect = NodePath("GameOverCover")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 custom_minimum_size = Vector2(250, 200)
 layout_mode = 0
 offset_right = 40.0
@@ -32,3 +41,68 @@ the quick brown fox
 the quick brown fox
 the quick brown fox
 the quick brown fox"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "0/100"
+label_settings = ExtResource("2_0p1gy")
+vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "1000s"
+label_settings = ExtResource("2_0p1gy")
+
+[node name="ExitLabel" type="Label" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Go to Exit"
+label_settings = ExtResource("3_0byik")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GameOverCover" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.423529, 0.423529, 0.682353)
+
+[node name="GameOverLabel" type="Label" parent="GameOverCover"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "ddsddsdsdsdedede"
+label_settings = ExtResource("4_oxskc")
+horizontal_alignment = 1
+vertical_alignment = 1

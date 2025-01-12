@@ -17,7 +17,6 @@ public partial class PickUp : Area2D
 		_sound.Play();
 		SignalManager.EmitOnPickUp();
 		_animationPlayer.Play("vanish");
-		SignalManager.EmitOnShowExit();
 	}
 
 	private void OnSoundFinished()
