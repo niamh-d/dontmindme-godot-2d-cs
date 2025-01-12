@@ -6,7 +6,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sguen"]
 radius = 11.0
-height = 44.0
+height = 32.0
 
 [sub_resource type="Animation" id="Animation_apenb"]
 resource_name = "flash"
