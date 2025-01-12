@@ -56,9 +56,27 @@ public partial class Npc : CharacterBody2D
 		str += $"IsTargetReached: {_navAgent.IsTargetReached()}\n";
 		str += $"IsTargetReachable: {_navAgent.IsTargetReachable()}\n";
 		str += $"IsNavigationFinished: {_navAgent.IsNavigationFinished()}\n";
-		str += $"Target: {_navAgent.TargetPosition}";
+		str += $"Target: {_navAgent.TargetPosition}\n";
+		str += $"Target: {GetFovAngle():F2}; InFOV: {PlayerIsInFov()}\n";
 		SignalManager.EmitOnDebugLabel(str);
 	}
+
+	private float GetFovAngle()
+	{
+		var dir = GlobalPosition.DirectionTo(_playerRef.GlobalPosition);
+		var dotProduct = dir.Dot(Velocity.Normalized());
+		if (dotProduct >= -1.0f && dotProduct <= 1.0f)
+		{
+			return Mathf.RadToDeg(Mathf.Acos(dotProduct));
+		}
+		return 0.0f;
+	}
+
+	private bool PlayerIsInFov()
+	{
+		return GetFovAngle() <= 60.0f;
+	}
+
 
 	private void RayCastToPlayer()
 	{
