@@ -7,9 +7,12 @@
 radius = 11.0
 height = 44.0
 
-[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent")]
+[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent", "_playerDetect", "_rayCast")]
+collision_layer = 0
 script = ExtResource("1_lfdg5")
 _navAgent = NodePath("NavigationAgent2D")
+_playerDetect = NodePath("PlayerDetect")
+_rayCast = NodePath("PlayerDetect/RayCast2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_0jwb4")
@@ -22,3 +25,10 @@ shape = SubResource("CapsuleShape2D_sguen")
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.922813, 0.478985, 0.392356, 1)
+
+[node name="PlayerDetect" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="PlayerDetect"]
+rotation = -1.5708
+target_position = Vector2(0, 400)
+collision_mask = 5

@@ -7,14 +7,18 @@ public partial class Npc : CharacterBody2D
 	[Export] private NavigationAgent2D _navAgent;
 	[Export] private float _moveSpeed = 100.0f;
 	[Export] private Node2D _patrolPoints;
+	[Export] private Node2D _playerDetect;
+	[Export] private RayCast2D _rayCast;
 
 	private enum EnemyState { Patrolling, Chasing, Searching }
 	private EnemyState _state = EnemyState.Patrolling;
 	private int _currentWp = 0;
 	private List<Vector2> _waypoints = new();
+	Player _playerRef;
 
 	public override void _Ready()
 	{
+		_playerRef = GetTree().GetFirstNodeInGroup(Player.GroupName) as Player;
 		SetPhysicsProcess(false);
 		CreateWaypoints();
 		CallDeferred(MethodName.LateSetup);
@@ -40,6 +44,7 @@ public partial class Npc : CharacterBody2D
 		{
 			_navAgent.TargetPosition = GetGlobalMousePosition();
 		}
+		RayCastToPlayer();
 		UpdateMovement();
 		UpdateNavigation();
 		UpdateDebugLabel();
@@ -53,6 +58,11 @@ public partial class Npc : CharacterBody2D
 		str += $"IsNavigationFinished: {_navAgent.IsNavigationFinished()}\n";
 		str += $"Target: {_navAgent.TargetPosition}";
 		SignalManager.EmitOnDebugLabel(str);
+	}
+
+	private void RayCastToPlayer()
+	{
+		_playerDetect.LookAt(_playerRef.GlobalPosition);
 	}
 
 	private void UpdateNavigation()
