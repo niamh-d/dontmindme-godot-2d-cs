@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -11,12 +12,14 @@ public partial class Npc : CharacterBody2D
 	[Export] private Sprite2D _warning;
 	[Export] private AudioStreamPlayer2D _sound;
 	[Export] private AnimationPlayer _animationPlayer;
+	[Export] private Timer _shootTimer;
 
 	private enum EnemyState { Patrolling, Chasing, Searching }
 	private EnemyState _state = EnemyState.Patrolling;
 	private int _currentWp = 0;
 	private List<Vector2> _waypoints = new();
 	Player _playerRef;
+	private static readonly PackedScene _bulletScene = GD.Load<PackedScene>("res://Scenes/Bullet/Bullet.tscn");
 
 	public override void _Ready()
 	{
@@ -24,6 +27,7 @@ public partial class Npc : CharacterBody2D
 		SetPhysicsProcess(false);
 		CreateWaypoints();
 		CallDeferred(MethodName.LateSetup);
+		_shootTimer.Timeout += OnShootTimerTimeout;
 	}
 
 	private async void LateSetup()
@@ -162,6 +166,14 @@ public partial class Npc : CharacterBody2D
 		_state = newState;
 	}
 
+	private void Shoot()
+	{
+		var bullet = _bulletScene.Instantiate<Bullet>();
+		bullet.GlobalPosition = GlobalPosition;
+		GetTree().Root.AddChild(bullet);
+		SoundManager.PlayLaser(_sound);
+	}
+
 	private void UpdateState()
 	{
 		var newState = _state;
@@ -197,5 +209,11 @@ public partial class Npc : CharacterBody2D
 		{
 			SetState(EnemyState.Patrolling);
 		}
+	}
+
+	private void OnShootTimerTimeout()
+	{
+		if (_state != EnemyState.Chasing) return;
+		Shoot();
 	}
 }

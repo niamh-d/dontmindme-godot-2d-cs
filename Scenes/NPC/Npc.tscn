@@ -46,7 +46,7 @@ _data = {
 "flash": SubResource("Animation_apenb")
 }
 
-[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent", "_playerDetect", "_rayCast", "_warning", "_sound", "_animationPlayer")]
+[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent", "_playerDetect", "_rayCast", "_warning", "_sound", "_animationPlayer", "_shootTimer")]
 collision_layer = 0
 script = ExtResource("1_lfdg5")
 _navAgent = NodePath("NavigationAgent2D")
@@ -55,6 +55,7 @@ _rayCast = NodePath("PlayerDetect/RayCast2D")
 _warning = NodePath("Warning")
 _sound = NodePath("Sound")
 _animationPlayer = NodePath("AnimationPlayer")
+_shootTimer = NodePath("ShootTimer")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_0jwb4")
@@ -86,3 +87,7 @@ libraries = {
 }
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true

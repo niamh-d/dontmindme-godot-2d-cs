@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_v2mv1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xfpiy"]
-height = 42.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4
