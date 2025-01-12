@@ -13,11 +13,11 @@ public partial class PickUp : Area2D
 
 	private void OnBodyEntered(Node2D _body)
 	{
-		GD.Print("PickUp.OnBodyEntered");
 		_sound.Stream = SoundManager.GetRandomPickupSound();
 		_sound.Play();
 		SignalManager.EmitOnPickUp();
 		_animationPlayer.Play("vanish");
+		SignalManager.EmitOnShowExit();
 	}
 
 	private void OnSoundFinished()
