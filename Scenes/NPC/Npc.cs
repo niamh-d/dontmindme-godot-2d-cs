@@ -4,8 +4,22 @@ using Godot;
 
 public partial class Npc : CharacterBody2D
 {
+
+	private static readonly Dictionary<EnemyState, float> Speeds = new()
+	{
+		{ EnemyState.Patrolling, 60.0f },
+		{ EnemyState.Chasing, 100.0f },
+		{ EnemyState.Searching, 80.0f }
+	};
+
+	private static readonly Dictionary<EnemyState, float> FovAngles = new()
+	{
+		{ EnemyState.Patrolling, 60.0f },
+		{ EnemyState.Chasing, 110.0f },
+		{ EnemyState.Searching, 90.0f }
+	};
+
 	[Export] private NavigationAgent2D _navAgent;
-	[Export] private float _moveSpeed = 80.0f;
 	[Export] private Node2D _patrolPoints;
 	[Export] private Node2D _playerDetect;
 	[Export] private RayCast2D _rayCast;
@@ -71,7 +85,7 @@ public partial class Npc : CharacterBody2D
 
 	private bool PlayerIsInFov()
 	{
-		return GetFovAngle() <= 60.0f;
+		return GetFovAngle() <= FovAngles[_state];
 	}
 
 
@@ -97,7 +111,7 @@ public partial class Npc : CharacterBody2D
 		{
 			var nextPathPos = _navAgent.GetNextPathPosition();
 			LookAt(nextPathPos);
-			Velocity = Position.DirectionTo(nextPathPos) * _moveSpeed;
+			Velocity = Position.DirectionTo(nextPathPos) * Speeds[_state];
 			MoveAndSlide();
 		}
 	}
@@ -147,7 +161,8 @@ public partial class Npc : CharacterBody2D
 		else if (newState == EnemyState.Chasing)
 		{
 			_warning.Hide();
-			SoundManager.PlayGasp(_sound);
+			if (!_sound.Playing)
+				SoundManager.PlayGasp(_sound);
 			_animationPlayer.Play("flash");
 		}
 		_state = newState;
