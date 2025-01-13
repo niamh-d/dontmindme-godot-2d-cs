@@ -39,7 +39,8 @@ public partial class Npc : CharacterBody2D
 	public override void _Ready()
 	{
 		_shootTimer.Timeout += OnShootTimerTimeout;
-		_hitBox.BodyEntered += OnHiboxBodyEntered;
+		_hitBox.BodyEntered += OnHitboxBodyEntered;
+		_navAgent.VelocityComputed += OnVelocityComputed;
 		_playerRef = GetTree().GetFirstNodeInGroup(Player.GroupName) as Player;
 		SetPhysicsProcess(false);
 		CreateWaypoints();
@@ -111,8 +112,7 @@ public partial class Npc : CharacterBody2D
 		{
 			var nextPathPos = _navAgent.GetNextPathPosition();
 			LookAt(nextPathPos);
-			Velocity = Position.DirectionTo(nextPathPos) * Speeds[_state];
-			MoveAndSlide();
+			_navAgent.Velocity = Position.DirectionTo(nextPathPos) * Speeds[_state];
 		}
 	}
 
@@ -219,9 +219,14 @@ public partial class Npc : CharacterBody2D
 		Shoot();
 	}
 
-	private void OnHiboxBodyEntered(Node2D body)
+	private void OnHitboxBodyEntered(Node2D body)
 	{
 		SignalManager.EmitOnGameOver();
 	}
 
+	private void OnVelocityComputed(Vector2 safeVelocity)
+	{
+		Velocity = safeVelocity;
+		MoveAndSlide();
+	}
 }
