@@ -69,6 +69,7 @@ offset = Vector2(10, 0)
 shape = SubResource("CapsuleShape2D_sguen")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 debug_path_custom_color = Color(0.922813, 0.478985, 0.392356, 1)
 
 [node name="PlayerDetect" type="Node2D" parent="."]
