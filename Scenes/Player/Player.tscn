@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://o266d35gkrau"]
 
-[ext_resource type="Texture2D" uid="uid://bdqyjneugqmsu" path="res://assets/images/soldier1_gun.png" id="1_gr1a0"]
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_v2mv1"]
+[ext_resource type="Texture2D" uid="uid://c6nk5ksanib4b" path="res://assets/images/survivor1_gun.png" id="2_218av"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xfpiy"]
 
@@ -12,7 +12,7 @@ script = ExtResource("1_v2mv1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(10, 0)
-texture = ExtResource("1_gr1a0")
+texture = ExtResource("2_218av")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_xfpiy")

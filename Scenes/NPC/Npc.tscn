@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dx31f3ncf03ah"]
+[gd_scene load_steps=9 format=3 uid="uid://dx31f3ncf03ah"]
 
 [ext_resource type="Texture2D" uid="uid://bdqyjneugqmsu" path="res://assets/images/soldier1_gun.png" id="1_0jwb4"]
 [ext_resource type="Script" path="res://Scenes/NPC/Npc.cs" id="1_lfdg5"]
@@ -7,6 +7,21 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sguen"]
 radius = 11.0
 height = 32.0
+
+[sub_resource type="Animation" id="Animation_lsrwk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_apenb"]
 resource_name = "flash"
@@ -25,28 +40,16 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 0.0862745, 0.0862745, 1), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_lsrwk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sikkk"]
 _data = {
 "RESET": SubResource("Animation_lsrwk"),
 "flash": SubResource("Animation_apenb")
 }
 
-[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent", "_playerDetect", "_rayCast", "_warning", "_sound", "_animationPlayer", "_shootTimer")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_fapec"]
+radius = 19.0263
+
+[node name="NPC" type="CharacterBody2D" node_paths=PackedStringArray("_navAgent", "_playerDetect", "_rayCast", "_warning", "_sound", "_animationPlayer", "_shootTimer", "_hitBox")]
 collision_layer = 0
 script = ExtResource("1_lfdg5")
 _navAgent = NodePath("NavigationAgent2D")
@@ -56,6 +59,7 @@ _warning = NodePath("Warning")
 _sound = NodePath("Sound")
 _animationPlayer = NodePath("AnimationPlayer")
 _shootTimer = NodePath("ShootTimer")
+_hitBox = NodePath("HitBox")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_0jwb4")
@@ -65,8 +69,6 @@ offset = Vector2(10, 0)
 shape = SubResource("CapsuleShape2D_sguen")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
-debug_use_custom = true
 debug_path_custom_color = Color(0.922813, 0.478985, 0.392356, 1)
 
 [node name="PlayerDetect" type="Node2D" parent="."]
@@ -89,5 +91,12 @@ libraries = {
 [node name="Sound" type="AudioStreamPlayer2D" parent="."]
 
 [node name="ShootTimer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 2.0
 autostart = true
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_fapec")

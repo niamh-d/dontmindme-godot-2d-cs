@@ -13,6 +13,7 @@ public partial class Npc : CharacterBody2D
 	[Export] private AudioStreamPlayer2D _sound;
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private Timer _shootTimer;
+	[Export] private Area2D _hitBox;
 
 	private enum EnemyState { Patrolling, Chasing, Searching }
 	private EnemyState _state = EnemyState.Patrolling;
@@ -23,11 +24,12 @@ public partial class Npc : CharacterBody2D
 
 	public override void _Ready()
 	{
+		_shootTimer.Timeout += OnShootTimerTimeout;
+		_hitBox.BodyEntered += OnHiboxBodyEntered;
 		_playerRef = GetTree().GetFirstNodeInGroup(Player.GroupName) as Player;
 		SetPhysicsProcess(false);
 		CreateWaypoints();
 		CallDeferred(MethodName.LateSetup);
-		_shootTimer.Timeout += OnShootTimerTimeout;
 	}
 
 	private async void LateSetup()
@@ -201,4 +203,10 @@ public partial class Npc : CharacterBody2D
 		if (_state != EnemyState.Chasing) return;
 		Shoot();
 	}
+
+	private void OnHiboxBodyEntered(Node2D body)
+	{
+		SignalManager.EmitOnGameOver();
+	}
+
 }
